@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload Image</title>
+  </head>
+  <body>
+    <h1>User Info</h1>
+    <h2>Upload Profile Image</h2>
+    <form
+      action="http://localhost:3000/upload"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      <label for="alias">Alias:</label>
+      <input
+        type="text"
+        name="alias"
+        id="alias"
+        placeholder="Enter your alias here"
+        required
+      /><br />
+      <label for="image">Upload your image here:</label>
+      <input type="file" name="image" id="image" required />
+      <button type="submit">Upload</button>
+    </form>
+    <h2>User Data Form</h2>
+    <form method="POST" action="http://localhost:3000/submit">
+      <label for="firstname">Firstname:</label>
+      <input
+        type="text"
+        name="firstname"
+        id="firstname"
+        placeholder="Enter your first name here"
+        required
+      /><br />
+      <label for="lastname">Lastname:</label>
+      <input
+        type="text"
+        name="lastname"
+        id="lastname"
+        placeholder="Enter your last name here"
+        required
+      /><br />
+      <p style="display: inline">Online?</p>
+      <input id="online" type="radio" name="online" value="online" checked />
+      <label for="online">True</label>
+      <input id="offline" type="radio" name="online" value="offline" />
+      <label for="offline">False</label>
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>
