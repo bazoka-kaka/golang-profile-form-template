@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"html/template"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"path/filepath"
 	"profile-form/models"
+	"strings"
 )
 
 func HandleForm(w http.ResponseWriter, r *http.Request) {
@@ -48,7 +50,7 @@ func HandleSubmit(w http.ResponseWriter, r *http.Request) {
 	user := models.User{
 		Firstname: r.FormValue("firstname"),
 		Lastname:  r.FormValue("lastname"),
-		Alias:     r.FormValue("alias"),
+		Alias:     strings.ToLower(r.FormValue("alias")),
 	}
 
 	// insert to json
@@ -82,4 +84,27 @@ func HandleSubmit(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Write([]byte("User added!"))
+}
+
+func HandleShowImage(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "GET" {
+		http.Error(w, "", http.StatusBadRequest)
+		return
+	}
+
+	alias := strings.ToLower(r.URL.Query().Get("filename"))
+	dir, err := os.Getwd()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	fileBytes, err := ioutil.ReadFile(filepath.Join(dir, "uploads", alias))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/octet-stream")
+	w.Write(fileBytes)
 }
